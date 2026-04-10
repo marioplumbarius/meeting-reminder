@@ -38,10 +38,10 @@ The overlay's "Snooze" button hardcodes a 1-minute snooze. Users cannot choose a
 - Update `onSnooze` closure in `OverlayCoordinator` to forward the `minutes` argument.
 
 ## Tasks
-- [ ] T1 — `MeetingMonitor`: accept `minutes` parameter in `snooze(minutes:)`
-- [ ] T2 — `OverlayWindow` / `OverlayView`: thread `(Int) -> Void` closure; replace button with `Menu`
-- [ ] T3 — `SettingsView`: add Snooze Options section with toggles
-- [ ] T4 — `MeetingReminderApp`: update coordinator closure signature
+- [x] T1 — `MeetingMonitor`: accept `minutes` parameter in `snooze(minutes:)` — was already implemented; no change needed
+- [x] T2 — `OverlayWindow` / `OverlayView`: thread `(Int) -> Void` closure; replace button with `Menu`
+- [x] T3 — `SettingsView`: add Snooze Options section with toggles
+- [x] T4 — `MeetingReminderApp`: update coordinator closure signature
 
 ## Out of scope
 - Custom free-text duration entry.
