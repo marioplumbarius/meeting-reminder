@@ -10,12 +10,20 @@ extension Notification.Name {
 final class FocusCountdownService: ObservableObject {
     @Published private(set) var nextEvent: MeetingEvent?
     @Published private(set) var remaining: TimeInterval = 0
+    @Published private(set) var initialRemaining: TimeInterval = 0
 
     private let calendarService: any CalendarServiceProtocol
     private var timer: Timer?
+    private var trackedEventID: String?
 
     init(calendarService: any CalendarServiceProtocol) {
         self.calendarService = calendarService
+    }
+
+    /// Fraction of the free-time gap that has elapsed, 0 → 1.
+    var progress: Double {
+        guard initialRemaining > 0 else { return 0 }
+        return min(1, max(0, 1 - remaining / initialRemaining))
     }
 
     func start() {
@@ -33,10 +41,27 @@ final class FocusCountdownService: ObservableObject {
 
     private func tick() {
         let now = Date()
-        nextEvent = calendarService.events
+        let allEvents = calendarService.events
+
+        let next = allEvents
             .filter { $0.startDate > now }
             .min(by: { $0.startDate < $1.startDate })
-        remaining = max(0, nextEvent?.startDate.timeIntervalSince(now) ?? 0)
+
+        if next?.id != trackedEventID {
+            trackedEventID = next?.id
+            if let next {
+                let priorEnd = allEvents
+                    .filter { $0.id != next.id && $0.endDate <= now }
+                    .map { $0.endDate }
+                    .max()
+                initialRemaining = next.startDate.timeIntervalSince(priorEnd ?? now)
+            } else {
+                initialRemaining = 0
+            }
+        }
+
+        nextEvent = next
+        remaining = max(0, next?.startDate.timeIntervalSince(now) ?? 0)
     }
 }
 
