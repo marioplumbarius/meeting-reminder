@@ -12,6 +12,7 @@ struct SettingsView: View {
     @AppStorage(WorkingHoursEvents.startMinutesKey) private var workingHoursStartMinutes: Int = WorkingHoursEvents.defaultStartMinutes
     @AppStorage(WorkingHoursEvents.endMinutesKey) private var workingHoursEndMinutes: Int = WorkingHoursEvents.defaultEndMinutes
     @AppStorage(WorkingHoursEvents.daysKey) private var workingHoursDaysMask: Int = WorkingHoursEvents.defaultDaysMask
+    @AppStorage(FocusCountdownCoordinator.enabledKey) private var focusCountdownEnabled: Bool = false
     @ObservedObject var calendarService: CalendarService
     @ObservedObject var meetingMonitor: MeetingMonitor
 
@@ -36,6 +37,11 @@ struct SettingsView: View {
             workingHoursTab
                 .tabItem {
                     Label("Working Hours", systemImage: "clock")
+                }
+
+            focusTab
+                .tabItem {
+                    Label("Focus", systemImage: "timer")
                 }
 
             calendarsTab
@@ -195,6 +201,26 @@ struct SettingsView: View {
                     Spacer()
                 }
                 .disabled(!workingHoursEnabled)
+            }
+        }
+        .formStyle(.grouped)
+        .padding()
+    }
+
+    private var focusTab: some View {
+        Form {
+            Section {
+                Toggle("Show floating countdown to next meeting", isOn: $focusCountdownEnabled)
+                Text("A small always-on-top window that counts down to your next meeting. Drag it anywhere on screen.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
+            Section {
+                Button("Reset window position") {
+                    NotificationCenter.default.post(name: .focusCountdownResetPosition, object: nil)
+                }
+                .disabled(!focusCountdownEnabled)
             }
         }
         .formStyle(.grouped)
