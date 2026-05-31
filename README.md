@@ -19,6 +19,7 @@ Inspired by <a href="https://www.inyourface.app">In Your Face</a>.
 ## Features
 
 - **Full-screen overlay** — appears on all screens at a configurable time before meetings (1 / 2 / 5 / 10 min)
+- **End-of-meeting reminder** — optional overlay before a meeting ends so you wrap up on time; suppressed when another meeting starts back-to-back
 - **Video link detection** — automatically finds Zoom, Google Meet, Microsoft Teams, Webex, and Slack Huddle links in event notes, URL, or location
 - **One-click join** — press the Join button or hit Enter to open the meeting link
 - **Snooze & dismiss** — snooze for 1 minute or dismiss with Escape
@@ -99,6 +100,7 @@ Open **Preferences** from the menu bar dropdown:
 | Setting | Options | Default |
 |---------|---------|---------|
 | Reminder time | 1 / 2 / 5 / 10 minutes before | 5 minutes |
+| End-of-meeting reminder | Never / 1 / 2 / 5 / 10 minutes before end | Never |
 | Sound | On / Off | On |
 | Background | Dark, Blue, Purple, Sunset, Red, Green, Night Ocean, Electric, Cyber | Dark |
 | Calendars | Select which calendars to monitor | All |
