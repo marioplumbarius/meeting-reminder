@@ -218,9 +218,10 @@ struct OverlayView: View {
             hasEnded = false
             availableSnoozeOptions = snoozeOptions
         case .ending:
-            let remaining = event.endDate.timeIntervalSinceNow
-            hasEnded = remaining <= 0
-            availableSnoozeOptions = snoozeOptions.filter { Double($0 * 60) <= remaining }
+            hasEnded = event.endDate.timeIntervalSinceNow <= 0
+            // Offer the full configured snooze list, just like the start overlay.
+            // The monitor caps any snooze that would run past the meeting's end.
+            availableSnoozeOptions = snoozeOptions
         }
     }
 
@@ -248,9 +249,9 @@ struct OverlayView: View {
         case .start:
             return true
         case .ending:
-            // Always show Acknowledge once snooze is no longer an option, so the
-            // user can never be trapped in the overlay with no actionable button.
-            return hasEnded || availableSnoozeOptions.isEmpty
+            // Always show Acknowledge so the user can dismiss the end-reminder
+            // outright instead of being forced to snooze.
+            return true
         }
     }
 

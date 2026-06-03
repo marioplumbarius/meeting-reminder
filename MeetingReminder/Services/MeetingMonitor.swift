@@ -73,13 +73,13 @@ final class MeetingMonitor: ObservableObject {
             snoozedEvents[event.id] = requested
             shownEventIDs.remove(event.id)
         case .ending:
-            // Never snooze past the meeting's end time.
-            let until = min(requested, event.endDate)
-            if until > Date() {
-                endReminderSnoozes[event.id] = until
+            // Never snooze past the meeting's end time. A snooze that would run
+            // to/past the end has nothing left to remind about — treat it as an
+            // acknowledge so the reminder doesn't pop again at the meeting's end.
+            if requested < event.endDate {
+                endReminderSnoozes[event.id] = requested
                 endReminderShownEventIDs.remove(event.id)
             } else {
-                // Meeting already ended — treat as acknowledge.
                 endReminderShownEventIDs.insert(event.id)
             }
         }
