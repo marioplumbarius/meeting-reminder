@@ -249,9 +249,9 @@ struct OverlayView: View {
         case .start:
             return true
         case .ending:
-            // Always show Acknowledge so the user can dismiss the end-reminder
-            // outright instead of being forced to snooze.
-            return true
+            // Always show Acknowledge once snooze is no longer an option, so the
+            // user can never be trapped in the overlay with no actionable button.
+            return hasEnded || availableSnoozeOptions.isEmpty
         }
     }
 
