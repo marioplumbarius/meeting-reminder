@@ -3,6 +3,8 @@ APP        = MeetingReminder
 SCHEME     = MeetingReminder
 BUILD_DIR  = build
 APP_PATH   = $(BUILD_DIR)/Build/Products/Release/$(APP).app
+HOMEBREW_CASKROOM = /opt/homebrew/Caskroom/meeting-reminder/local
+SYMLINK_PATH = /Applications/$(APP)-Local.app
 PKG_NAME   = $(APP)-$(VERSION).pkg
 DMG_NAME   = $(APP)-$(VERSION).dmg
 DMG_STAGE  = $(BUILD_DIR)/dmg-stage
@@ -18,6 +20,11 @@ build:
 		CODE_SIGN_IDENTITY="" \
 		CODE_SIGNING_REQUIRED=NO \
 		CODE_SIGNING_ALLOWED=NO
+	mkdir -p "$(HOMEBREW_CASKROOM)"
+	rm -rf "$(HOMEBREW_CASKROOM)/$(APP).app"
+	cp -r "$(APP_PATH)" "$(HOMEBREW_CASKROOM)/$(APP).app"
+	rm -f "$(SYMLINK_PATH)"
+	ln -s "$(HOMEBREW_CASKROOM)/$(APP).app" "$(SYMLINK_PATH)"
 
 # DMG з drag-to-Applications вікном
 installer: build
