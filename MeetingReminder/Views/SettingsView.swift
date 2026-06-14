@@ -19,9 +19,9 @@ struct SettingsView: View {
 
     @State private var launchAtLogin = false
     @State private var enabledCalendarIDs: Set<String> = []
-    @State private var snoozeOptions: Set<Int> = [1, 5, 10, 15, 20, 30]
+    @State private var snoozeOptions: Set<Int> = [1, 2, 5, 10]
 
-    private let snoozeOptionCandidates = [1, 5, 10, 15, 20, 30]
+    private let snoozeOptionCandidates = [1, 2, 5, 10, 15]
 
     var body: some View {
         TabView {
@@ -340,7 +340,7 @@ struct SettingsView: View {
 
     private func loadSnoozeOptions() {
         let stored = (UserDefaults.standard.array(forKey: "snoozeOptions") as? [NSNumber])?.map { $0.intValue } ?? []
-        snoozeOptions = stored.isEmpty ? [1, 5, 10, 15, 20, 30] : Set(stored)
+        snoozeOptions = stored.isEmpty ? [1, 2, 5, 10] : Set(stored)
     }
 
     private func saveSnoozeOptions() {
