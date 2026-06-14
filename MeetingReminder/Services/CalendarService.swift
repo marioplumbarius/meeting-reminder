@@ -95,7 +95,37 @@ final class CalendarService: ObservableObject, CalendarServiceProtocol {
                 return MeetingEvent(from: ekEvent, videoLink: videoLink)
             }
 
-        events = (realEvents + WorkingHoursEvents.synthesize(for: now) + PreviewEvents.synthesize(for: now))
+        var synthesized = WorkingHoursEvents.synthesize(for: now)
+
+        // Add preview events if enabled
+        if UserDefaults.standard.bool(forKey: "previewEventsEnabled") {
+            if let upcoming = Calendar.current.date(byAdding: .minute, value: 2, to: now) {
+                synthesized.append(
+                    MeetingEvent(
+                        id: "preview-upcoming",
+                        title: "Preview: Meeting in 2 min",
+                        startDate: upcoming,
+                        endDate: upcoming.addingTimeInterval(1800),
+                        calendar: "Preview",
+                        videoLink: "https://zoom.us/j/123456"
+                    )
+                )
+            }
+            if let ongoing = Calendar.current.date(byAdding: .minute, value: -5, to: now),
+               let ongoingEnd = Calendar.current.date(byAdding: .minute, value: 7, to: now) {
+                synthesized.append(
+                    MeetingEvent(
+                        id: "preview-ongoing",
+                        title: "Preview: Ongoing meeting",
+                        startDate: ongoing,
+                        endDate: ongoingEnd,
+                        calendar: "Preview"
+                    )
+                )
+            }
+        }
+
+        events = (realEvents + synthesized)
             .sorted { $0.startDate < $1.startDate }
 
         availableCalendars = eventStore.calendars(for: .event)
