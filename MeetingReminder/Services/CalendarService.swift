@@ -95,7 +95,7 @@ final class CalendarService: ObservableObject, CalendarServiceProtocol {
                 return MeetingEvent(from: ekEvent, videoLink: videoLink)
             }
 
-        events = (realEvents + WorkingHoursEvents.synthesize(for: now))
+        events = (realEvents + WorkingHoursEvents.synthesize(for: now) + PreviewEvents.synthesize(for: now))
             .sorted { $0.startDate < $1.startDate }
 
         availableCalendars = eventStore.calendars(for: .event)

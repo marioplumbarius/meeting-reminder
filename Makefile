@@ -9,7 +9,7 @@ PKG_NAME   = $(APP)-$(VERSION).pkg
 DMG_NAME   = $(APP)-$(VERSION).dmg
 DMG_STAGE  = $(BUILD_DIR)/dmg-stage
 
-.PHONY: build close run dmg pkg installer clean
+.PHONY: build close run preview dmg pkg installer clean
 
 build:
 	xcodebuild \
@@ -31,6 +31,12 @@ close:
 	killall $(APP) 2>/dev/null || true
 
 run: close clean build
+	open "$(SYMLINK_PATH)"
+
+preview: run
+	bash preview.sh
+	sleep 1
+	killall $(APP) 2>/dev/null || true
 	open "$(SYMLINK_PATH)"
 
 # DMG з drag-to-Applications вікном
