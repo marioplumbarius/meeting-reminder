@@ -219,9 +219,9 @@ struct OverlayView: View {
         case .start:
             return true
         case .ending:
-            // Always show Acknowledge once snooze is no longer an option, so the
-            // user can never be trapped in the overlay with no actionable button.
-            return hasEnded || availableSnoozeOptions.isEmpty
+            // Always show Acknowledge button for ending overlays, especially when
+            // requireAction hides snooze, so user is never trapped with no actionable button.
+            return true
         }
     }
 
