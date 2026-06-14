@@ -107,7 +107,7 @@ final class CalendarService: ObservableObject, CalendarServiceProtocol {
                         startDate: upcoming,
                         endDate: upcoming.addingTimeInterval(1800),
                         calendar: "Preview",
-                        videoLink: "https://zoom.us/j/123456"
+                        videoLink: URL(string: "https://zoom.us/j/123456")
                     )
                 )
             }
