@@ -99,26 +99,28 @@ final class CalendarService: ObservableObject, CalendarServiceProtocol {
 
         // Add preview events if enabled
         if UserDefaults.standard.bool(forKey: "previewEventsEnabled") {
-            if let upcoming = Calendar.current.date(byAdding: .minute, value: 2, to: now) {
+            // First meeting: starts now, ends in 3 minutes
+            if let firstEnd = Calendar.current.date(byAdding: .minute, value: 3, to: now) {
                 synthesized.append(
                     MeetingEvent(
-                        id: "preview-upcoming",
-                        title: "Preview: Meeting in 2 min",
-                        startDate: upcoming,
-                        endDate: upcoming.addingTimeInterval(1800),
+                        id: "preview-first",
+                        title: "Preview: Starting now",
+                        startDate: now,
+                        endDate: firstEnd,
                         calendar: "Preview",
                         videoLink: URL(string: "https://zoom.us/j/123456")
                     )
                 )
             }
-            if let ongoing = Calendar.current.date(byAdding: .minute, value: -5, to: now),
-               let ongoingEnd = Calendar.current.date(byAdding: .minute, value: 7, to: now) {
+            // Second meeting: starts in 3 minutes (when first ends), ends in 8 minutes
+            if let secondStart = Calendar.current.date(byAdding: .minute, value: 3, to: now),
+               let secondEnd = Calendar.current.date(byAdding: .minute, value: 8, to: now) {
                 synthesized.append(
                     MeetingEvent(
-                        id: "preview-ongoing",
-                        title: "Preview: Ongoing meeting",
-                        startDate: ongoing,
-                        endDate: ongoingEnd,
+                        id: "preview-second",
+                        title: "Preview: In 3 minutes",
+                        startDate: secondStart,
+                        endDate: secondEnd,
                         calendar: "Preview"
                     )
                 )
