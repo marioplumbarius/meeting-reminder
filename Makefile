@@ -23,7 +23,7 @@ build:
 	mkdir -p "$(HOMEBREW_CASKROOM)"
 	rm -rf "$(HOMEBREW_CASKROOM)/$(APP).app"
 	cp -r "$(APP_PATH)" "$(HOMEBREW_CASKROOM)/$(APP).app"
-	xattr -d com.apple.quarantine "$(HOMEBREW_CASKROOM)/$(APP).app" 2>/dev/null || true
+	codesign --force --deep --sign - "$(HOMEBREW_CASKROOM)/$(APP).app"
 	rm -f "$(SYMLINK_PATH)"
 	ln -s "$(HOMEBREW_CASKROOM)/$(APP).app" "$(SYMLINK_PATH)"
 
