@@ -205,11 +205,12 @@ struct OverlayView: View {
     }
 
     private var showSnoozeButton: Bool {
-        guard !requireAction else { return false }
         switch kind {
         case .start:
+            guard !requireAction else { return false }
             return !availableSnoozeOptions.isEmpty
         case .ending:
+            // Always show snooze for ending overlays to force action (snooze or dismiss)
             return !hasEnded && !availableSnoozeOptions.isEmpty
         }
     }
