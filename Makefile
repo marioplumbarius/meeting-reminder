@@ -23,6 +23,7 @@ build:
 	mkdir -p "$(HOMEBREW_CASKROOM)"
 	rm -rf "$(HOMEBREW_CASKROOM)/$(APP).app"
 	cp -r "$(APP_PATH)" "$(HOMEBREW_CASKROOM)/$(APP).app"
+	codesign --force --sign - --deep "$(HOMEBREW_CASKROOM)/$(APP).app"
 	rm -f "$(SYMLINK_PATH)"
 	ln -s "$(HOMEBREW_CASKROOM)/$(APP).app" "$(SYMLINK_PATH)"
 
